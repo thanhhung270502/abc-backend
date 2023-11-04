@@ -7,6 +7,6 @@ router.get('/:slug', projectController.get);
 router.get('/', projectController.getAll);
 router.post('/', projectController.create);
 router.put('/', projectController.update);
-router.delete('/', projectController.delete)
+router.delete('/:slug', projectController.delete)
 
 module.exports = router;
