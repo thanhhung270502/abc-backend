@@ -1,14 +1,14 @@
 version: '3'
 
 services:
-    app:
-        container_name: abcTeamContainer
-        image: nhlcoding
-        build: .
-        ports:
-            - '3000:3000'
-        depends_on:
-            - db
+    # app:
+    #     container_name: abcTeamContainer
+    #     image: nhlcoding
+    #     build: .
+    #     ports:
+    #         - '3000:3000'
+    #     depends_on:
+    #         - db
 
     db:
         container_name: abcTeamDB
