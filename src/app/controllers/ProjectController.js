@@ -12,7 +12,6 @@ class ProjectController {
             
             return res.status(200).json({
                 message: "Project created successfully",
-                data: response
             });
         } catch (error) {
             console.log(error);
@@ -37,9 +36,7 @@ class ProjectController {
                 return res.status(200).json({
                     message: 'Found project successfully',
                     code: 200,
-                    body: {
-                        project: response.rows[0],
-                    },
+                    data: response.rows[0],
                 });
             } else {
                 return res.status(404).json({
