@@ -4,7 +4,7 @@ class UniController {
     // [GET] /
     async index(req, res, next) {
         try {
-            const query = 'SELECT * FROM uni';
+            const query = 'SELECT * FROM university';
             const response = await pool.query(query);
             return res.status(200).json(response.rows);
         } catch (err) {
@@ -13,20 +13,10 @@ class UniController {
         }
     }
 
-    async getAll(req, res) {
-        try {
-            const query = 'SELECT * FROM uni';
-            const data = await pool.query(query);
-            return res.status(200).json(data.rows);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
     async show(req, res, next) {
         try {
             const id = parseInt(req.params.slug);
-            const response = await pool.query('SELECT * FROM uni WHERE id = $1', [id]);
+            const response = await pool.query('SELECT * FROM university WHERE id = $1', [id]);
             if (response.rows.length > 0) {
                 return res.status(200).json({
                     message: 'Found user successfully',
@@ -51,11 +41,11 @@ class UniController {
         try {
             const {name } = req.body;
             const response = await pool.query(
-                'INSERT INTO uni (name ) VALUES ($1)',
+                'INSERT INTO university (name ) VALUES ($1)',
                 [name],
             );
 
-            const getUni = await pool.query('SELECT * FROM  uni WHERE name = $1', [name]);
+            const getUni = await pool.query('SELECT * FROM  university WHERE name = $1', [name]);
 
             return res.status(200).json({
                 message: 'Uni created successfully',
@@ -73,7 +63,7 @@ class UniController {
         try {
             const {name, id } = req.body;
             const query = `
-                UPDATE uni 
+                UPDATE university 
                 SET name = name
                 WHERE id = id
             `;
@@ -86,7 +76,7 @@ class UniController {
             const values = [name];
             const response = await pool.query(query, values)
 
-            const getUni = await pool.query('SELECT * FROM  uni WHERE name = $1', [name]);
+            const getUni = await pool.query('SELECT * FROM  university WHERE name = $1', [name]);
 
             return res.status(200).json({
                 message: 'update Uni successfully',
@@ -105,7 +95,7 @@ class UniController {
         try {
             const {id } = req.body;
             const deleteProjectQuery = `
-              DELETE FROM uni
+              DELETE FROM university
               WHERE id = $1
             `;
 
