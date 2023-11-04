@@ -3,14 +3,26 @@ const pool = require('../../config/db');
 class ProjectController {
     async create(req, res) {
         try {
-            const { name, description, location, user_id, start_date, end_date } = req.body;
-            const query =
-                'INSERT INTO project (name, description, location, user_id, start_date, end_date) VALUES ($1, $2, $3, $4, $5, $6)';
+            const { name, description, location, user_id, start_date, end_date, quantity } = req.body;
 
-            const response = await pool.query(query, [name, description, location, user_id, start_date, end_date]);
+            console.log(req.body);
+            const query =
+                'INSERT INTO project (name, description, location, user_id, start_date, end_date, quantity, isChecked) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
+
+            const response = await pool.query(query, [
+                name,
+                description,
+                location,
+                user_id,
+                start_date,
+                end_date,
+                quantity,
+                false,
+            ]);
 
             return res.status(200).json({
                 message: 'Project created successfully',
+                data: response,
             });
         } catch (error) {
             console.log(error);
@@ -29,7 +41,7 @@ class ProjectController {
 
     async get(req, res) {
         try {
-            const { id } = req.body;
+            const id = parseInt(req.params.slug);
             const response = await pool.query('SELECT * FROM project WHERE id = $1', [id]);
             if (response.rows.length > 0) {
                 return res.status(200).json({
@@ -52,32 +64,54 @@ class ProjectController {
 
     async update(req, res) {
         try {
-            const { id, name, description, location, user_id, start_date, end_date } = req.body;
+            const { id, name, description, location, user_id, start_date, end_date, quantity } = req.body;
             const query = `
-                UPDATE projects 
-                SET name = $2, description = $3, location = $4, user_id = $5, start_date = $6, end_date = $7)
-                WHERE id = $7
+                UPDATE project
+                SET name = $1, description = $2, location = $3, user_id = $4, start_date = $5, end_date = $6, quantity = $7)
+                WHERE id = $8
             `;
-            const values = [name, description, location, user_id, start_date, end_date, projectId];
-            const response = await pool.query(query, [name, description, location, user_id, start_date, end_date]);
+            const values = [name, description, location, user_id, start_date, end_date, quantity, id];
+            const response = await pool.query(query, values);
 
-            return res.status.json({
+            return res.status(200).json({
                 message: 'Update Project successfully!',
+                data: response,
             });
         } catch (err) {
             console.log(err);
         }
     }
+
+    async updateIsChecked(req, res) {
+        try {
+            const id = parseInt(req.params.slug);
+            const { isChecked } = req.body;
+            const query = `
+                UPDATE project SET isChecked = $1 WHERE id = $2
+            `;
+            const values = [isChecked, id];
+            const response = await pool.query(query, values);
+
+            return res.status(200).json({
+                message: 'Update Project successfully!',
+                data: response,
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     async delete(req, res) {
         try {
-            const { id } = req.body;
+            const id = parseInt(req.params.slug);
             const deleteProjectQuery = `
-              DELETE FROM projects
-              WHERE id = $1
+                DELETE FROM project
+                WHERE id = $1
             `;
             const response = await pool.query(deleteProjectQuery, [id]);
-            return res.status.json({
+            return res.status(200).json({
                 message: 'Delete Project successfully!',
+                data: response,
             });
         } catch (error) {}
     }
