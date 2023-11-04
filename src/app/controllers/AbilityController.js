@@ -51,6 +51,42 @@ class AbilityController {
             return res.status(500).json('Internal Server Error');
         }
     }
+
+    // [PUT]
+    async update(req, res) {
+        try {
+            const { name } = req.body;
+            const id = parseInt(req.params.slug);
+            const query = `
+                UPDATE ability SET name = $1 WHERE id = $2
+            `;
+            const values = [name, id];
+            const response = await pool.query(query, values);
+
+            return res.status(200).json({
+                message: 'Update Project successfully!',
+                data: response,
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    // [DELETE]
+    async delete(req, res) {
+        try {
+            const id = parseInt(req.params.slug);
+            const deleteProjectQuery = `
+                DELETE FROM ability
+                WHERE id = $1
+            `;
+            const response = await pool.query(deleteProjectQuery, [id]);
+            return res.status(200).json({
+                message: 'Delete Project successfully!',
+                data: response,
+            });
+        } catch (error) {}
+    }
 }
 
 module.exports = new AbilityController();
