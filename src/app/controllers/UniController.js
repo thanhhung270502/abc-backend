@@ -64,16 +64,16 @@ class UniController {
             const {name, id } = req.body;
             const query = `
                 UPDATE university 
-                SET name = name
-                WHERE id = id
+                SET name = $1
+                WHERE id = $2
             `;
 
             // const response = await pool.query(
-            //     'UPDATE INTO uni (name ) VALUES ($1)',
+            //     'UPDATE INTO university (name ) VALUES ($1)',
             //     [name],
             // );
 
-            const values = [name];
+            const values = [name,id];
             const response = await pool.query(query, values)
 
             const getUni = await pool.query('SELECT * FROM  university WHERE name = $1', [name]);
@@ -91,19 +91,23 @@ class UniController {
         }
     }
 
-    async update(req, res) {
+    async delete(req, res) {
         try {
             const {id } = req.body;
-            const deleteProjectQuery = `
+            const deleteUniversity = `
               DELETE FROM university
               WHERE id = $1
             `;
 
-            const response = await pool.query(deleteProjectQuery, [id]);
+            await pool.query(deleteUniversity, [id]);
+            
             return res.status.json({
                 message: 'Delete Uni successfully!',
             });
-        } catch (error) {}
+        } catch (error) {
+            console.log(err);
+            return res.status(500).json('Internal Server Error');
+        }
 
     }
 }
