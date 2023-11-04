@@ -13,6 +13,16 @@ class UniController {
         }
     }
 
+    async getAll(req, res) {
+        try {
+            const query = 'SELECT * FROM uni';
+            const data = await pool.query(query);
+            return res.status(200).json(data.rows);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     async show(req, res, next) {
         try {
             const id = parseInt(req.params.slug);
@@ -64,14 +74,17 @@ class UniController {
             const {name, id } = req.body;
             const query = `
                 UPDATE uni 
-                SET name = name)
+                SET name = name
                 WHERE id = id
             `;
 
-            const response = await pool.query(
-                'UPDATE INTO uni (name ) VALUES ($1)',
-                [name],
-            );
+            // const response = await pool.query(
+            //     'UPDATE INTO uni (name ) VALUES ($1)',
+            //     [name],
+            // );
+
+            const values = [name];
+            const response = await pool.query(query, values)
 
             const getUni = await pool.query('SELECT * FROM  uni WHERE name = $1', [name]);
 
