@@ -20,3 +20,4 @@ services:
         environment:
             - POSTGRES_PASSWORD=password
             - POSTGRES_USER=abcTeam
+            - POSTGRES_DB=abcDatabase
