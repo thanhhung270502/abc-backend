@@ -14,19 +14,18 @@ class ProjectController {
                 message: "Project created successfully",
                 data: response
             });
-            
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     }
 
     async getAll(req, res) {
         try {
-            const query = "SELECT * FROM project"
-            const data = await pool.query(query)
-            return res.status(200).json(data.rows)
+            const query = 'SELECT * FROM project';
+            const data = await pool.query(query);
+            return res.status(200).json(data.rows);
         } catch (error) {
-            console.log(error)            
+            console.log(error);
         }
     }
 
@@ -47,9 +46,9 @@ class ProjectController {
                     message: 'Project not found',
                     code: 404,
                 });
-            }  
+            }
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     }
 
@@ -69,7 +68,7 @@ class ProjectController {
                 data: response
             })
         } catch (err) {
-            console.log(err)
+            console.log(err);
         }
     }
 
@@ -89,7 +88,6 @@ class ProjectController {
             
         }
     }
-
 }
 
 module.exports = new ProjectController();
