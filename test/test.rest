@@ -1,0 +1,25 @@
+###
+GET http://localhost:3000
+
+###
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "user_id": 1922,
+    "email": "example@gmail.com",
+    "password": "123456",
+    "name": "Example",
+    "provider": "manual"
+}
+
+###
+GET http://localhost:3000/problems
+
+###
+POST http://localhost:3000/problems
+Content-Type: application/json
+
+{
+    "problem": "a"
+}
