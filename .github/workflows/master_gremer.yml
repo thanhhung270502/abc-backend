@@ -12,6 +12,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    env:
+      CONN: ${{ secrets.CONN }}
 
     steps:
       - uses: actions/checkout@v4
@@ -38,7 +41,7 @@ jobs:
           
       - name: Create .env file
         run: |
-          echo "CONN=${secrets.CONN}" > .env
+          echo "CONN=${CONN}" > .env
 
       - name: Display .env content
         run: cat .env
