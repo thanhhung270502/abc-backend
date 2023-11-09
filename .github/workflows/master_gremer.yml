@@ -22,9 +22,16 @@ jobs:
           node-version: '18.x'
 
       - name: Create .env file
-        uses: ozaytsev86/create-env-file@v1
-        with: 
-          INPUT_ENV_CONN: ${{ secrets.CONN }}
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_DEBUG: false
+          envkey_CONN: ${{ secrets.CONN }}
+          some_other_variable: foobar
+          directory: './'
+          file_name: .env
+          fail_on_empty: false
+          sort_keys: false
+        
           
       - name: View directory
         run: | 
