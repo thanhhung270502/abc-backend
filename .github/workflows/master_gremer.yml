@@ -32,10 +32,13 @@ jobs:
       #     fail_on_empty: false
       #     sort_keys: false
 
+      - name: View directory
+        run: | 
+          ls
+          
       - name: Create .env file
         run: |
-          echo "API_KEY=${API_KEY}" > .env
-          echo "DATABASE_URL=${DATABASE_URL}" >> .env
+          echo "CONN=${secrets.CONN}" > .env
 
       - name: Display .env content
         run: cat .env
