@@ -1,37 +1,61 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Node.js CI
+name: Build and deploy Node.js app to Azure Web App - greemer
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
 
 jobs:
   build:
+    runs-on: ubuntu-latest
 
-    runs-on: windows-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x]
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm run start --if-present
-    # - run: npm run test:staging
-    # - name: SSH Remote Commands
-    #   uses: appleboy/ssh-action@v0.1.2
-    #   with:
-    #     key: ${{secrets.GOOGLE_CLOUD_VM_SSH}}
-    #     host: ${{secrets.GOOGLE_CLOUD_VM_IP}}
-    #     username: ${{secrets.GOOGLE_CLOUD_VM_USERNAME}}
-    #     script: |
-    #       pm2 delete all
-    #       cd /var/app/tdd-nodejs
-    #       git pull
-    #       npm install
-    #       pm2 start npm -- start
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: npm install, build, and test
+        run: |
+          npm install
+          npm run build --if-present
+          npm run test --if-present
+      - name: Zip artifact for deployment
+        run: zip release.zip ./* -r
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: node-app
+          path: release.zip
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: node-app
+
+      - name: Unzip artifact for deployment
+        run: unzip release.zip
+
+      - name: 'Deploy to Azure Web App'
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'greemer'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E51FB1792EF04EABA9E6864FDFE16B97 }}
+          package: .
