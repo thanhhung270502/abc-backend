@@ -26,7 +26,12 @@ jobs:
           touch .env
           echo CONN=${{ secrets.CONN }} >> .env
           cat .env
-      
+
+
+      - name: View directory
+        run: | 
+          ls
+          
       - name: npm install, build, and test
         run: |
           npm install
