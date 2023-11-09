@@ -14,5 +14,5 @@ jobs:
         with:
           node-version: '18.x'
       - run: npm ci
-      - run: node index.js
+      - run: node src/index.js
       # - run: npm test
