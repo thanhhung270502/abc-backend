@@ -22,12 +22,10 @@ jobs:
           node-version: '18.x'
 
       - name: Create .env file
-        run: | 
-          touch .env
-          echo CONN=${{ secrets.CONN }} >> .env
-          cat .env
-
-
+        uses: ozaytsev86/create-env-file@v1
+        with: 
+          CONN: ${{ secrets.CONN }}
+          
       - name: View directory
         run: | 
           ls
