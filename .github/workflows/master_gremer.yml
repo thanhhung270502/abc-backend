@@ -24,7 +24,7 @@ jobs:
       - name: Create .env file
         uses: ozaytsev86/create-env-file@v1
         with: 
-          CONN: ${{ secrets.CONN }}
+          INPUT_ENV_CONN: ${{ secrets.CONN }}
           
       - name: View directory
         run: | 
