@@ -33,11 +33,12 @@ jobs:
       #     sort_keys: false
 
       - name: Create .env file
-        uses: ozaytsev86/create-env-file@v1
-        with:
-          INPUT_ENV_TEST_API_KEY: ${{ secrets.TEST_API_KEY }}
-          INPUT_ENV_ANOTHER_KEY: ${{ secrets.ANOTHER_KEY }}
-          
+        run: |
+          echo "API_KEY=${API_KEY}" > .env
+          echo "DATABASE_URL=${DATABASE_URL}" >> .env
+
+      - name: Display .env content
+        run: cat .env
         
           
       - name: View directory
