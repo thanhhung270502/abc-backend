@@ -4,12 +4,15 @@ const authRouter = require('./auth');
 const abilityRouter = require('./ability');
 const projectsRouter = require('./projects');
 const uniRouter = require('./uni');
+const sessionsRouter = require('./sessions');
+
 function route(app) {
     app.use('/uni', uniRouter);
     app.use('/ability', abilityRouter);
     app.use('/auth', authRouter);
     app.use('/users', usersRouter);
     app.use('/project', projectsRouter);
+    app.use('/sessions', sessionsRouter);
     app.use('/', siteRouter);
 }
 
