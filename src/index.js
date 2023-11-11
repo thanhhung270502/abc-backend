@@ -7,13 +7,13 @@ const passportStrategy = require('./passport');
 require('dotenv').config();
 
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
     cors({
-        origin: 'http://localhost:3001',
+        origin: 'http://localhost:3000',
         credentials: true,
     }),
 );
