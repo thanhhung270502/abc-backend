@@ -28,15 +28,15 @@ const createTableProject = async () => {
         await pool.query('drop table if exists project');
 
         const query = `CREATE TABLE project (
-                id serial NOT NULL,
-                name varchar NULL,
-                description varchar NULL,
-                "location" varchar NULL,
-                user_id int NULL,
-                start_date date NULL,
-                end_date date NULL,
-                quantity int NULL,
-                CONSTRAINT project_pk PRIMARY KEY (id)
+            id serial NOT NULL,
+            name varchar NULL,
+            description varchar NULL,
+            "location" varchar NULL,
+            user_id int NULL,
+            start_date date NULL,
+            end_date date NULL,
+            quantity int NULL,
+            CONSTRAINT project_pk PRIMARY KEY (id)
         )`;
         await pool.query(query);
     } catch (err) {
