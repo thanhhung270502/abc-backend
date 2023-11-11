@@ -27,7 +27,7 @@ class UniController {
                 });
             } else {
                 return res.status(404).json({
-                    message: 'User not found',
+                    message: 'Uni not found',
                     code: 404,
                 });
             }
