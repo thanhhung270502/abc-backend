@@ -9,7 +9,7 @@ class UniController {
             return res.status(200).json(response.rows);
         } catch (err) {
             console.log(err);
-            return res.status(500).json('Internal Server Error');
+            res.status(404).json(error.message);
         }
     }
 
@@ -33,7 +33,7 @@ class UniController {
             }
         } catch (err) {
             console.log(err);
-            return res.status(500).json('Internal Server Error');
+            res.status(404).json(error.message);
         }
     }
 
@@ -55,7 +55,7 @@ class UniController {
             });
         } catch (err) {
             console.log(err);
-            return res.status(500).json('Internal Server Error');
+            res.status(404).json(error.message);
         }
     }
 
@@ -87,7 +87,7 @@ class UniController {
             });
         } catch (err) {
             console.log(err);
-            return res.status(500).json('Internal Server Error');
+            return res.status(404).json(error.message);
         }
     }
 
@@ -102,12 +102,12 @@ class UniController {
 
             await pool.query(deleteUniversity, [id]);
             
-            return res.status.json({
+            return res.status(200).json({
                 message: 'Delete Uni successfully!',
             });
         } catch (error) {
             console.log(error);
-            return res.status(500).json('Internal Server Error');
+            return res.status(404).json(error.message);
         }
 
     }
