@@ -81,6 +81,48 @@ const insertUsers = async () => {
     }
 };
 
+
+const insertUnivercity = async () => {
+    try {
+        await pool.query(`
+
+        INSERT INTO university (name) VALUES (    
+            'UEF'
+        );
+
+
+        INSERT INTO university (name) VALUES (    
+            'VNU'
+        );
+
+
+        INSERT INTO university (name) VALUES (    
+            'TMU'
+        );
+
+        INSERT INTO university (name) VALUES (    
+            'HUST'
+        );
+
+        INSERT INTO university (name) VALUES (    
+            'HUP'
+        );
+
+
+        INSERT INTO university (name) VALUES (    
+            'HCMUT'
+        );
+
+        INSERT INTO university (name) VALUES (    
+            'IUH'
+        );
+
+        `);
+    } catch (err) {
+        console.log(err);
+        process.exit(1);
+    }
+};
 // const insertLanguages = async () => {
 //     try {
 //     } catch (err) {
@@ -94,6 +136,7 @@ const insertUsers = async () => {
         // Insert testcases into database
         console.log('Waiting...');
         console.log('If program does not show anything, program run sucessfully');
+        await insertUnivercity();
         await insertUsers();
     } catch (err) {
         console.log(err);
