@@ -3,11 +3,13 @@ const pool = require('../../config/db');
 class ProjectController {
     async create(req, res) {
         try {
-            const { name, description, location, user_id, start_date, end_date, quantity } = req.body;
-
+            const { name, description, location, user_id, start_date, end_date, quantity, uni_ids } = req.body;
             console.log(req.body);
-            const query =
-                'INSERT INTO project (name, description, location, user_id, start_date, end_date, quantity, isChecked) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
+
+            const query = `INSERT INTO project (name, description, location, user_id, start_date, end_date, quantity) 
+                    VALUES ($1, $2, $3, $4, $5, $6, $7)
+                    RETURNING id
+                `;
 
             const response = await pool.query(query, [
                 name,
@@ -17,12 +19,29 @@ class ProjectController {
                 start_date,
                 end_date,
                 quantity,
-                false,
             ]);
+
+            const projectUniQuery = `INSERT INTO project_uni (project_id, uni_id, is_checked) VALUES ($1, $2, $3)`;
+            uni_ids.map(async (uni_id) => {
+                try {
+                    const createProjectUni = await pool.query(projectUniQuery, [response.rows[0].id, uni_id, false]);
+                    console.log('ek');
+                } catch (error) {
+                    console.log(error);
+                }
+            });
 
             return res.status(200).json({
                 message: 'Project created successfully',
-                data: response,
+                data: {
+                    name,
+                    description,
+                    location,
+                    user_id,
+                    start_date,
+                    end_date,
+                    quantity,
+                },
             });
         } catch (error) {
             console.log(error);
@@ -104,6 +123,8 @@ class ProjectController {
     async delete(req, res) {
         try {
             const id = parseInt(req.params.slug);
+            const { project_id } = parseInt(req.body);
+            console.log(id);
             const deleteProjectQuery = `
                 DELETE FROM project
                 WHERE id = $1

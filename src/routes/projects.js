@@ -14,6 +14,6 @@ router.put('/:slug/isChecked', projectController.updateIsChecked);
 // http:localhost:3000/project/:slug
 router.put('/:slug', projectController.update);
 // http:localhost:3000/project/:slug
-router.delete('/slug', projectController.delete);
+router.delete('/:slug', projectController.delete);
 
 module.exports = router;
