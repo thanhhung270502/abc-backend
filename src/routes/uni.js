@@ -6,7 +6,7 @@ const uniController = require('../app/controllers/UniController');
 router.get('/:slug', uniController.show);
 router.post('/create', uniController.create);
 router.post('/update', uniController.update);
-router.post('/delete', uniController.delete);
+router.delete('/delete', uniController.delete);
 router.get('/', uniController.index);
 
 module.exports = router;

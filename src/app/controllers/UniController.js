@@ -105,7 +105,7 @@ class UniController {
                 message: 'Delete Uni successfully!',
             });
         } catch (error) {
-            console.log(err);
+            console.log(error);
             return res.status(500).json('Internal Server Error');
         }
 
