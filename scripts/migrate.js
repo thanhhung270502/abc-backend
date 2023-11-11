@@ -36,6 +36,7 @@ const createTableProject = async () => {
             start_date date NULL,
             end_date date NULL,
             quantity int NULL,
+            is_checked boolean NULL,
             CONSTRAINT project_pk PRIMARY KEY (id)
         )`;
         await pool.query(query);

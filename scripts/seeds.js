@@ -123,6 +123,45 @@ const insertUnivercity = async () => {
     }
 };
 
+const insertProjectUser = async () => {
+    try {
+        await pool.query(`
+
+        INSERT INTO project_user (project_id, user_id, is_checked) VALUES (    
+            1, 1, true
+        );
+
+
+        INSERT INTO project_user (project_id, user_id, is_checked) VALUES (    
+            1, 2, true
+        );
+
+
+        INSERT INTO project_user (project_id, user_id, is_checked) VALUES (    
+            1, 3, true
+        );
+
+        INSERT INTO project_user (project_id, user_id, is_checked) VALUES (    
+            2, 1, true
+        );
+
+
+        INSERT INTO project_user (project_id, user_id, is_checked) VALUES (    
+            2, 2, true
+        );
+
+
+        INSERT INTO project_user (project_id, user_id, is_checked) VALUES (    
+            2, 3, true
+        );
+
+        `);
+    } catch (err) {
+        console.log(err);
+        process.exit(1);
+    }
+};
+
 const insertUsers = async () => {
     try {
         await pool.query(`
@@ -355,6 +394,7 @@ const insertUsers = async () => {
         await insertProject();
         await insertUnivercity();
         await insertUsers();
+        await insertProjectUser();
     } catch (err) {
         console.log(err);
         process.exit(1);
