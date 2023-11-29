@@ -16,7 +16,7 @@ services:
         volumes:
             - ./tmp/db:/var/lib/postgresql/data
         ports:
-            - '5433:5432'
+            - '5431:5431'
         environment:
             - POSTGRES_PASSWORD=password
             - POSTGRES_USER=abcTeam
