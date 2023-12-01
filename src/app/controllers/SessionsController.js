@@ -5,6 +5,7 @@ class SessionsController {
     async create(req, res) {
         try {
             const { email, password } = req.body;
+            console.log(`email = ${email}, password = ${password}`);
             const query = 'SELECT * FROM users WHERE email = $1 and password = $2';
             const response = await pool.query(query, [email, password]);
 
