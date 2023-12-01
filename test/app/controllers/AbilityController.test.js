@@ -7,12 +7,14 @@ const testCaseData = [
     },
 ];
 
+const host = 'http://localhost:3001';
+
 describe('AbilityController TestCases', () => {
     it.each(testCaseData)('$message', async ({ expect }) => {
-        await request('http://localhost:3000').get('/ability/').expect(expect);
+        await request(host).get('/ability/').expect(expect);
     });
 
     it('post Ability', async () => {
-        await request('http://localhost:3000').post('/ability/').send({ name: 'Cat hat' }).expect(200);
+        await request(host).post('/ability/').send({ name: 'Cat hat' }).expect(200);
     });
 });

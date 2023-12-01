@@ -8,10 +8,12 @@ const testCaseData = [
     },
 ];
 
+const host = 'http://localhost:3001';
+
 describe('ProjectController TestCases', () => {
     it.each(testCaseData)('$message', async ({ expect, typ }) => {
         if (typ == 'get') {
-            await request('http://localhost:3000').get('/project/').expect(expect);
+            await request(host).get('/project/').expect(expect);
         }
     });
 });
