@@ -26,9 +26,9 @@ class AbilityController {
                     },
                 });
             } else {
-                return res.status(404).json({
+                return res.status(400).json({
                     message: 'User not found',
-                    code: 404,
+                    code: 400,
                 });
             }
         } catch (err) {
@@ -40,8 +40,9 @@ class AbilityController {
     async create(req, res) {
         try {
             const { name } = req.body;
+
             if (!name) {
-                return res.status(400).json('Invalid Ability');
+                return res.status(400).json('Missing ability name');
             }
 
             const response = await pool.query('INSERT INTO ability (name) VALUES ($1)', [name]);
@@ -64,7 +65,6 @@ class AbilityController {
         try {
             const { name } = req.body;
             const id = parseInt(req.params.slug);
-            console.log(id, name);
 
             const checkAbility = await pool.query('SELECT * FROM ability WHERE id = $1', [id]);
 
@@ -78,12 +78,17 @@ class AbilityController {
             const values = [name, id];
             const response = await pool.query(query, values);
 
+            const getAbility = await pool.query('SELECT * FROM  ability WHERE id = $1', [id]);
+
             return res.status(200).json({
                 message: 'Update Project successfully!',
-                // data: response,
+                body: {
+                    uni: getAbility.rows[0],
+                },
             });
         } catch (err) {
             console.log(err);
+            return res.status(500).json('Internal Server Error');
         }
     }
 
@@ -105,7 +110,6 @@ class AbilityController {
             const response = await pool.query(deleteProjectQuery, [id]);
             return res.status(200).json({
                 message: 'Delete Project successfully!',
-                data: response,
             });
         } catch (error) {}
     }
