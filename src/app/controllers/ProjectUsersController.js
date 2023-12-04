@@ -148,11 +148,15 @@ class AbilityController {
                 DELETE FROM project_user
                 WHERE id = $1
             `;
+            
             const response = await pool.query(deleteProjectQuery, [id]);
             return res.status(200).json({
                 message: 'Delete project_user successfully!',
             });
-        } catch (error) {}
+
+        } catch (error) {
+            return res.status(500).json("Error")
+        }
     }
 }
 

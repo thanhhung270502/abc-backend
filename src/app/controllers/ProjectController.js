@@ -197,6 +197,7 @@ class ProjectController {
                 WHERE id = $1
             `;
             const response = await pool.query(deleteProjectQuery, [id]);
+            
             return res.status(200).json({
                 message: 'Delete Project successfully!',
                 data: {
