@@ -71,7 +71,6 @@ describe('ProjectController TestCases', () => {
     });
 
     test('approve a project', async () => {
-
         const response = await request(app).put(`/project/${projectId}/isChecked`).send({
             isChecked: true,
             uni_id: 1,
