@@ -55,14 +55,14 @@ jobs:
       uses: docker/login-action@v2
       with:
         registry: https://index.docker.io/v1/
-        username: ${{ secrets.AzureAppService_ContainerUsername_3794e2feb22d4689a53c6fa649b9318b }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_3d3b8302cffc421b9bdc44814b017a9a }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_84b6322cb2314924b29f3396e2b71da5 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_8779f65d2f044a338a93b5daf9e6cc8b }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_3794e2feb22d4689a53c6fa649b9318b }}/dckr_pat_HxfC29hqGCuxeelIKBEW1lL9l3w:${{ github.sha }}
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_84b6322cb2314924b29f3396e2b71da5 }}/abc-summer:${{ github.sha }}
         file: ./Dockerfile
         build-args: |
           ENV_VARIABLE=${{ secrets.CONNECTION_STRING }}
@@ -81,5 +81,5 @@ jobs:
       with:
         app-name: 'abc-summer'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_90751ba4e5444fef8c9fbf5e3830be00 }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_3794e2feb22d4689a53c6fa649b9318b }}/dckr_pat_HxfC29hqGCuxeelIKBEW1lL9l3w:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_0929f86fc14f4edb9031949fdf9786ea }}
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_84b6322cb2314924b29f3396e2b71da5 }}/abc-summer:${{ github.sha }}'
