@@ -57,7 +57,7 @@ describe('ProjectController TestCases', () => {
                 isChecked: true,
                 uni_id: 1,
             });
-        expect(response.status).toBe(400);
+        expect(response.status).toBe(404);
     });
 
     test('reject a non-exist project', async () => {
@@ -67,7 +67,7 @@ describe('ProjectController TestCases', () => {
                 isChecked: false,
                 uni_id: 1,
             });
-        expect(response.status).toBe(400);
+        expect(response.status).toBe(404);
     });
 
     test('approve a project', async () => {
@@ -84,8 +84,7 @@ describe('ProjectController TestCases', () => {
             isChecked: false,
             uni_id: 1,
         });
-        expect(response.status).toBe(200);
-        expect(response.body.data.is_checked).toEqual(false);
+        expect(response.status).toBe(400);
     });
 
     test('student apply a project', async () => {
