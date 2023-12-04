@@ -7,8 +7,8 @@ class AuthController {
                 const getUser = await pool.query('SELECT * FROM users WHERE email = $1', [req.user._json.email]);
                 if (getUser.rows.length === 0) {
                     const addUser = await pool.query(
-                        'INSERT INTO users (email, password, name, provider, role, avatar) VALUES ($1, $2, $3, $4, $5, $6)',
-                        [req.user._json.email, '', req.user._json.name, req.user.provider, 0, req.user._json.picture],
+                        'INSERT INTO users (email, password, name, role, avatar) VALUES ($1, $2, $3, $4, $5, $6)',
+                        [req.user._json.email, '', req.user._json.name, 0, req.user._json.picture],
                     );
 
                     const getCurrentUser = await pool.query('SELECT * FROM users WHERE email = $1', [
