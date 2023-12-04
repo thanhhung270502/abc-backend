@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router()
 const projectController = require('../app/controllers/ProjectController');
 
-
+router.get('/me', verifyToken, projectController.getMyProject);
 router.get('/project-uni', projectController.getProjectUnis);
 router.put('/isChecked/:slug', isUniveristyAdmin, projectController.updateIsChecked);
 router.get('/:slug', projectController.get);
