@@ -12,6 +12,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      CONNECTION_STRING: ${{ secrets.CONNECTION_STRING }}
     steps:
       - uses: actions/checkout@v4
 
@@ -19,6 +21,20 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
+
+
+      - name: Create .env file
+        run: |
+          echo "CONNECTION_STRING=${CONNECTION_STRING}" > .env
+
+      - name: Display .env content
+        run: cat .env
+        
+          
+      - name: View directory
+        run: | 
+          ls
+
 
       - name: npm install, build, and test
         run: |
