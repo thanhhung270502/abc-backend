@@ -12,9 +12,7 @@ describe('AbilityController TestCases', () => {
         const response = await request(app).post('/ability/').send({ name: 'Example ability' });
         expect(response.status).toBe(200);
 
-        console.log(response.body.body);
         ability_id = response.body.body.id;
-        console.log(ability_id);
     }, 6000);
 
     test('add-new-invalid-ability', async () => {

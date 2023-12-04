@@ -1,7 +1,15 @@
 FROM node:18.16.1
-WORKDIR /nhlcoding-backend
-COPY . .
+
+WORKDIR /abc/src/app
+COPY package*.json ./
 RUN npm install
-# CMD [ "node", "src/index.js" ]
-CMD [ "npm", "start" ]
-# CMD [ "nodemon", "--inspect", "src/index.js" ]
+
+COPY . .
+
+# Set environment variables
+ARG ENV_VARIABLE
+ENV CONNECTION_STRING $ENV_VARIABLE
+
+
+EXPOSE 80
+CMD ["npm", "start"]

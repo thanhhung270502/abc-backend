@@ -20,7 +20,6 @@ describe('User TestCases', () => {
                 uni_id: '7',
             })
             .expect(200);
-        console.log(response.body);
         // user_id = response.body.body.user.user_id;
     }, 6000);
 
