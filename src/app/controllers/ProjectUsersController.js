@@ -40,8 +40,12 @@ class AbilityController {
                 return res.status(400).json('Missing project_id or user_id');
             }
 
-            if ((await pool.query('select * from project where id = $1', [project_id])).rows.length === 0) {
+            const resProject = await pool.query('select * from project where id = $1', [project_id])
+            if (resProject.rows[0].length === 0) {
                 return res.status(400).json({message: 'Project is not found.'})
+            }
+            if (resProject.rows[0].is_checked !== true) {
+                return res.status(400).json({message: 'This projects has not been approved.'})
             }
 
             const resProjectUser = await pool.query(

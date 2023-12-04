@@ -235,6 +235,44 @@ class ProjectController {
             return res.status(500).json('Internal Server Error');
         }
     }
+
+    async getMyProject(req, res) {
+        // Student
+        try {
+            if (req.userRole === 0) {
+                const response = await pool.query(` 
+                    SELECT   project_user.*, project.*,
+                            project_user.is_checked AS user_is_checked,
+                            project.is_checked AS project_is_checked
+                    FROM project_user  
+                    JOIN project ON project_user.project_id = project.id
+                    WHERE project_user.user_id = $1
+                `, [req.userID])
+    
+                return res.status(200).json({
+                    data: response.rows
+                })
+            }
+            else if (req.userRole === 1) {
+                const response = await pool.query(`SELECT * from project where project.user_id = $1`, [req.userID])
+                return res.status(200).json({
+                    data: response.rows
+                })
+            }
+            else {
+                const user = (await pool.query(`SELECT * from users where id = $1`, [req.userID])).rows[0]
+
+                const response = await pool.query(`SELECT * from project where project.uni_id = $1`, [user.uni_id])
+                
+                return res.status(200).json({
+                    data: response.rows
+                })
+            }
+        } catch (error) {
+            return res.status(500).json({message: "Error"})
+        }
+
+    }
 }
 
 module.exports = new ProjectController();
