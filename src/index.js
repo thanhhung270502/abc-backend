@@ -32,8 +32,10 @@ app.use(passport.session());
 // Routes
 route(app);
 
-app.listen(PORT, () => {
-    console.log('Server on port', PORT);
-});
+if (!module.parent) {
+    app.listen(PORT, () => {
+        console.log('Server on port', PORT);
+    });
+}
 
-module.exports = app
+module.exports = app;

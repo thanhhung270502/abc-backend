@@ -5,7 +5,7 @@ class ProjectController {
         try {
             const { name, description, location, user_id, start_date, end_date, quantity, uni_ids } = req.body;
             if (!name) {
-                return res.status(400).json('Invalid Project')
+                return res.status(400).json('Invalid Project');
             }
 
             const query = `INSERT INTO project (name, description, location, user_id, start_date, end_date, quantity) 
@@ -43,7 +43,7 @@ class ProjectController {
                     start_date,
                     end_date,
                     quantity,
-                    id: response.rows[0].id
+                    id: response.rows[0].id,
                 },
             });
         } catch (error) {
@@ -55,7 +55,7 @@ class ProjectController {
     async getAll(req, res) {
         try {
             const query = 'SELECT * FROM project';
-            console.log('alo')
+            console.log('alo');
             const data = await pool.query(query);
             return res.status(200).json(data.rows);
         } catch (error) {
@@ -85,7 +85,6 @@ class ProjectController {
         } catch (error) {
             console.log(error);
             return res.status(500).json('Internal Server Error');
-
         }
     }
 
@@ -114,19 +113,18 @@ class ProjectController {
         try {
             const id = parseInt(req.params.slug);
             const { isChecked } = req.body;
-  
 
             const query = `
                 UPDATE project SET is_checked = $1 WHERE id = $2
             `;
-            
+
             const values = [isChecked, id];
             const response = await pool.query(query, values);
 
-            const resProject = (await pool.query('SELECT * from project WHERE id = $1', [id]))
+            const resProject = await pool.query('SELECT * from project WHERE id = $1', [id]);
             if (resProject.rows.length === 0) {
-                return res.status(400).json({message: 'Project not found!'});
-            }       
+                return res.status(400).json({ message: 'Project not found!' });
+            }
 
             return res.status(200).json({
                 message: 'Update Project successfully!',
@@ -141,10 +139,10 @@ class ProjectController {
         try {
             const id = parseInt(req.params.slug);
 
-            const resProject = await pool.query('SELECT * from project where id = $1', [id])
+            const resProject = await pool.query('SELECT * from project where id = $1', [id]);
 
             if (resProject.rows.length === 0) {
-                return res.status(400).json({message: 'Project not found'})
+                return res.status(400).json({ message: 'Project not found' });
             }
 
             const deleteProjectQuery = `
@@ -155,7 +153,7 @@ class ProjectController {
             return res.status(200).json({
                 message: 'Delete Project successfully!',
                 data: {
-                    project_id: id
+                    project_id: id,
                 },
             });
         } catch (error) {

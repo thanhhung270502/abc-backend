@@ -40,11 +40,18 @@ class AbilityController {
     async create(req, res) {
         try {
             const { name } = req.body;
+            if (!name) {
+                return res.status(400).json('Invalid Ability');
+            }
+
             const response = await pool.query('INSERT INTO ability (name) VALUES ($1)', [name]);
+
+            const getCurrentAbility = await pool.query('SELECT * FROM ability WHERE name = $1', [name]);
 
             return res.status(200).json({
                 message: 'User created successfully',
                 code: '200',
+                body: getCurrentAbility.rows[getCurrentAbility.rows.length - 1],
             });
         } catch (err) {
             console.log(err);
@@ -57,6 +64,14 @@ class AbilityController {
         try {
             const { name } = req.body;
             const id = parseInt(req.params.slug);
+            console.log(id, name);
+
+            const checkAbility = await pool.query('SELECT * FROM ability WHERE id = $1', [id]);
+
+            if (checkAbility.rows.length === 0) {
+                return res.status(400).json(`Ability with id = ${id} is not available`);
+            }
+
             const query = `
                 UPDATE ability SET name = $1 WHERE id = $2
             `;
@@ -65,7 +80,7 @@ class AbilityController {
 
             return res.status(200).json({
                 message: 'Update Project successfully!',
-                data: response,
+                // data: response,
             });
         } catch (err) {
             console.log(err);
@@ -76,6 +91,13 @@ class AbilityController {
     async delete(req, res) {
         try {
             const id = parseInt(req.params.slug);
+
+            const checkAbility = await pool.query('SELECT * FROM ability WHERE id = $1', [id]);
+
+            if (checkAbility.rows.length === 0) {
+                return res.status(400).json(`Ability with id = ${id} is not available`);
+            }
+
             const deleteProjectQuery = `
                 DELETE FROM ability
                 WHERE id = $1

@@ -18,13 +18,13 @@ const mockData = {
         uni_ids: [1],
     },
     newUser: {
-        email: "supper_unique_user_20002_2002@gmail.com", 
-        password: "2020", 
-        name: "TEST ACCOUNT", 
-        provider: "manual", 
-        role: 1, 
-        uni_id: 1
-    }
+        email: 'supper_unique_user_20002_2002@gmail.com',
+        password: '2020',
+        name: 'TEST ACCOUNT',
+        provider: 'manual',
+        role: 1,
+        uni_id: 1,
+    },
 };
 
 describe('ProjectController TestCases', () => {
@@ -92,34 +92,32 @@ describe('ProjectController TestCases', () => {
     });
 
     test('student apply a project', async () => {
-        const user = await request(app).post('/users').send(mockData.newUser)
-        userId = user.body.body.user.id
+        const user = await request(app).post('/users').send(mockData.newUser);
+        userId = user.body.body.user.id;
         const response = await request(app).post(`/projectUser`).send({
-            "project_id": projectId,
-            "user_id": userId
+            project_id: projectId,
+            user_id: userId,
         });
         expect(response.status).toBe(200);
     });
 
-    
     test('approve student apply a project', async () => {
         const response = await request(app).put(`/projectUser`).send({
-            "project_id": projectId,
-            "user_id": userId,
-            is_checked: true
+            project_id: projectId,
+            user_id: userId,
+            is_checked: true,
         });
         expect(response.status).toBe(200);
         expect(response.body.data.is_checked).toEqual(true);
     });
 
-    
     test('reject student apply a project', async () => {
-        const user = await request(app).post('/users').send(mockData.newUser)
+        const user = await request(app).post('/users').send(mockData.newUser);
 
         const response = await request(app).put(`/projectUser`).send({
-            "project_id": projectId,
-            "user_id":  userId,
-            is_checked: false
+            project_id: projectId,
+            user_id: userId,
+            is_checked: false,
         });
         expect(response.status).toBe(200);
         expect(response.body.data.is_checked).toEqual(false);
@@ -131,7 +129,9 @@ describe('ProjectController TestCases', () => {
     });
 
     test('delete a non-existed project', async () => {
-        const response = await request(app).delete(`/project/${projectId + 9999}`).send();
+        const response = await request(app)
+            .delete(`/project/${projectId + 9999}`)
+            .send();
         expect(response.status).toBe(400);
     });
 });

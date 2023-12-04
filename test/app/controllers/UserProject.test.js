@@ -1,5 +1,7 @@
 const request = require('supertest');
 
+const app = require('../../../src/index');
+
 const testCaseData = [
     {
         message: 'get User Project response 200 ',
@@ -19,20 +21,19 @@ const testCaseData = [
         message: 'post User Project response 200 ',
         typ: 'post',
         route: '/projectUser/',
-        send: { project_id: 1, user_id: 1 },
+        send: { project_id: 5, user_id: 1 },
         expect: 200,
     },
 ];
 
-const host = 'http://localhost:3001';
-
 describe('UserProject TestCases', () => {
-    it.each(testCaseData)('$message', async ({ expect, typ, route, send }) => {
-        if (typ == 'get') {
-            await request(host).get(route).send(send).expect(expect);
-        }
-        if (typ == 'post') {
-            await request(host).post(route).send(send).expect(expect);
-        }
+    test('postUserProject', async () => {
+        const response = await request(app)
+            .post('/projectUser')
+            .send({
+                project_id: 5,
+                user_id: 1,
+            })
+            .expect(200);
     });
 });

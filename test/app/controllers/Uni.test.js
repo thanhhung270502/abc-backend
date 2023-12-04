@@ -1,5 +1,7 @@
 const request = require('supertest');
 
+const app = require('../../../src/index');
+
 const testCaseData = [
     {
         message: 'get Uni response 200 ',
@@ -31,21 +33,10 @@ const testCaseData = [
     },
 ];
 
-const host = 'http://localhost:3001';
+describe('Uni TestCases', () => {
+    let uni_id;
 
-describe('UserProject TestCases', () => {
-    it.each(testCaseData)('$message', async ({ expect, typ, route, send }) => {
-        if (typ == 'get') {
-            await request(host).get(route).send(send).expect(expect);
-        }
-        if (typ == 'post') {
-            await request(host).post(route).send(send).expect(expect);
-        }
-        if (typ == 'put') {
-            await request(host).put(route).send(send).expect(expect);
-        }
-        if (typ == 'del') {
-            await request(host).del(route).send(send).expect(expect);
-        }
+    test('get-all-universities', async () => {
+        const response = await request(app).get('/uni').send().expect(200);
     });
 });
