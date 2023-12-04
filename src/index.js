@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
     cors({
-        origin: 'http://localhost:3000',
+        origin: 'http://localhost:' + PORT,
         credentials: true,
     }),
 );
@@ -32,6 +32,10 @@ app.use(passport.session());
 // Routes
 route(app);
 
-app.listen(PORT, () => {
-    console.log('Server on port', PORT);
-});
+if (!module.parent) {
+    app.listen(PORT, () => {
+        console.log('Server on port', PORT);
+    });
+}
+
+module.exports = app;

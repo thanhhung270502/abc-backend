@@ -26,9 +26,9 @@ class AbilityController {
                     },
                 });
             } else {
-                return res.status(404).json({
+                return res.status(400).json({
                     message: 'User not found',
-                    code: 404,
+                    code: 400,
                 });
             }
         } catch (err) {
@@ -40,11 +40,19 @@ class AbilityController {
     async create(req, res) {
         try {
             const { name } = req.body;
+
+            if (!name) {
+                return res.status(400).json('Missing ability name');
+            }
+
             const response = await pool.query('INSERT INTO ability (name) VALUES ($1)', [name]);
+
+            const getCurrentAbility = await pool.query('SELECT * FROM ability WHERE name = $1', [name]);
 
             return res.status(200).json({
                 message: 'User created successfully',
                 code: '200',
+                body: getCurrentAbility.rows[getCurrentAbility.rows.length - 1],
             });
         } catch (err) {
             console.log(err);
@@ -57,18 +65,30 @@ class AbilityController {
         try {
             const { name } = req.body;
             const id = parseInt(req.params.slug);
+
+            const checkAbility = await pool.query('SELECT * FROM ability WHERE id = $1', [id]);
+
+            if (checkAbility.rows.length === 0) {
+                return res.status(400).json(`Ability with id = ${id} is not available`);
+            }
+
             const query = `
                 UPDATE ability SET name = $1 WHERE id = $2
             `;
             const values = [name, id];
             const response = await pool.query(query, values);
 
+            const getAbility = await pool.query('SELECT * FROM  ability WHERE id = $1', [id]);
+
             return res.status(200).json({
                 message: 'Update Project successfully!',
-                data: response,
+                body: {
+                    uni: getAbility.rows[0],
+                },
             });
         } catch (err) {
             console.log(err);
+            return res.status(500).json('Internal Server Error');
         }
     }
 
@@ -76,6 +96,13 @@ class AbilityController {
     async delete(req, res) {
         try {
             const id = parseInt(req.params.slug);
+
+            const checkAbility = await pool.query('SELECT * FROM ability WHERE id = $1', [id]);
+
+            if (checkAbility.rows.length === 0) {
+                return res.status(400).json(`Ability with id = ${id} is not available`);
+            }
+
             const deleteProjectQuery = `
                 DELETE FROM ability
                 WHERE id = $1
@@ -83,7 +110,6 @@ class AbilityController {
             const response = await pool.query(deleteProjectQuery, [id]);
             return res.status(200).json({
                 message: 'Delete Project successfully!',
-                data: response,
             });
         } catch (error) {}
     }

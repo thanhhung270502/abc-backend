@@ -7,7 +7,8 @@
         "start": "nodemon --inspect src/index.js",
         "migrate": "node scripts/migrate.js",
         "seeds": "node scripts/seeds.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "reset": "node scripts/migrate.js scripts/seeds.js",
+        "test": "jest"
     },
     "keywords": [],
     "author": "",
@@ -23,6 +24,11 @@
         "passport": "^0.6.0",
         "passport-google-oauth": "^2.0.0",
         "pg": "^8.11.3",
-        "python-shell": "^5.0.0"
+        "python-shell": "^5.0.0",
+        "requests": "^0.3.0"
+    },
+    "devDependencies": {
+        "jest": "^29.7.0",
+        "supertest": "^6.3.3"
     }
 }

@@ -4,7 +4,7 @@ class AbilityController {
     // [GET]
     async index(req, res) {
         try {
-            const query = 'SELECT * FROM project_user';
+            const query = 'SELECT * FROM project_ability join ability on ability.id = project_ability.project_ability';
             const response = await pool.query(query);
             return res.status(200).json(response.rows);
         } catch (err) {
@@ -32,11 +32,11 @@ class AbilityController {
     // [POST]
     async create(req, res) {
         try {
-            const { project_id, user_id, is_checked } = req.body;
-            const response = await pool.query(
-                'INSERT INTO project_user (project_id, user_id, is_checked) VALUES ($1, $2, $3)',
-                [project_id, user_id, null],
-            );
+            const { project_id, ability_id } = req.body;
+            const response = await pool.query('INSERT INTO project_user (project_id, ability_id) VALUES ($1, $2)', [
+                project_id,
+                ability_id,
+            ]);
 
             return res.status(200).json({
                 message: 'User created successfully',
