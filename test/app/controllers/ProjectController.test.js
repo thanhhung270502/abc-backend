@@ -50,7 +50,6 @@ describe('ProjectController TestCases', () => {
     });
 
     test('approve a non-exist project', async () => {
-        console.log(`/project/${projectId}/isChecked`);
 
         const response = await request(app)
             .put(`/project/${projectId + 9999}/isChecked`)
@@ -72,8 +71,6 @@ describe('ProjectController TestCases', () => {
     });
 
     test('approve a project', async () => {
-        console.log(`/project/${projectId}/isChecked`);
-
         const response = await request(app).put(`/project/${projectId}/isChecked`).send({
             isChecked: true,
             uni_id: 1,

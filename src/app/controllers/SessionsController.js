@@ -5,12 +5,10 @@ class SessionsController {
     async create(req, res) {
         try {
             const { email, password } = req.body;
-            console.log(`email = ${email}, password = ${password}`);
             const query = 'SELECT * FROM users WHERE email = $1 and password = $2';
             const response = await pool.query(query, [email, password]);
 
             if (response.rows.length > 0) {
-                console.log(response.rows[0]);
                 return res.status(200).json({
                     message: 'Login successfully completed',
                     code: 200,

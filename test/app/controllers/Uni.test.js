@@ -14,7 +14,6 @@ describe('Uni TestCases', () => {
         expect(response.status).toBe(200);
 
         uni_id = response.body.body.id;
-        console.log(uni_id);
     }, 6000);
 
     test('add-new-invalid-university', async () => {
