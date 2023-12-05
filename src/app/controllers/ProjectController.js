@@ -38,12 +38,6 @@ class ProjectController {
                 user_id,
             ]);
 
-            // try {
-            //     const createProjectUni = await pool.query(projectUniQuery, [response.rows[0].id, uni_id, null]);
-            // } catch (error) {
-            //     return res.status(404).json({ message: `Error with uni_id = ${uni_id}` });
-            // }
-
             return res.status(201).json({
                 message: 'Project created successfully',
                 data: {
@@ -78,14 +72,13 @@ class ProjectController {
     async get(req, res) {
         try {
             const id = parseInt(req.params.slug);
-            const response = await pool.query('SELECT * FROM project WHERE id = $1', [id]);
+            const response = await pool.query(
+                'SELECT project.*, university.name as uni_name FROM project, university WHERE project.id = $1 and project.uni_id = university.id',
+                [id],
+            );
             if (response.rows.length > 0) {
                 return res.status(200).json({
-                    message: 'Found project successfully',
-                    code: 200,
-                    body: {
-                        project: response,
-                    },
+                    project: response.rows[0],
                 });
             } else {
                 return res.status(404).json({
@@ -170,7 +163,7 @@ class ProjectController {
                 data: { ...resProject.rows[0], is_checked: req.body.isChecked },
             });
         } catch (err) {
-            console.log(err)
+            console.log(err);
             return res.status(500).json('Internal Server Error');
         }
     }
@@ -191,13 +184,12 @@ class ProjectController {
                 return res.status(404).send({ message: "That project wasn't created by you." });
             }
 
-            
             const deleteProjectQuery = `
                 DELETE FROM project
                 WHERE id = $1
             `;
             const response = await pool.query(deleteProjectQuery, [id]);
-            
+
             return res.status(200).json({
                 message: 'Delete Project successfully!',
                 data: {
@@ -241,38 +233,38 @@ class ProjectController {
         // Student
         try {
             if (req.userRole === 0) {
-                const response = await pool.query(` 
+                const response = await pool.query(
+                    ` 
                     SELECT   project_user.*, project.*,
                             project_user.is_checked AS user_is_checked,
                             project.is_checked AS project_is_checked
                     FROM project_user  
                     JOIN project ON project_user.project_id = project.id
                     WHERE project_user.user_id = $1
-                `, [req.userID])
-    
-                return res.status(200).json({
-                    data: response.rows
-                })
-            }
-            else if (req.userRole === 1) {
-                const response = await pool.query(`SELECT * from project where project.user_id = $1`, [req.userID])
-                return res.status(200).json({
-                    data: response.rows
-                })
-            }
-            else {
-                const user = (await pool.query(`SELECT * from users where id = $1`, [req.userID])).rows[0]
+                `,
+                    [req.userID],
+                );
 
-                const response = await pool.query(`SELECT * from project where project.uni_id = $1`, [user.uni_id])
-                
                 return res.status(200).json({
-                    data: response.rows
-                })
+                    data: response.rows,
+                });
+            } else if (req.userRole === 1) {
+                const response = await pool.query(`SELECT * from project where project.user_id = $1`, [req.userID]);
+                return res.status(200).json({
+                    data: response.rows,
+                });
+            } else {
+                const user = (await pool.query(`SELECT * from users where id = $1`, [req.userID])).rows[0];
+
+                const response = await pool.query(`SELECT * from project where project.uni_id = $1`, [user.uni_id]);
+
+                return res.status(200).json({
+                    data: response.rows,
+                });
             }
         } catch (error) {
-            return res.status(500).json({message: "Error"})
+            return res.status(500).json({ message: 'Error' });
         }
-
     }
 }
 
