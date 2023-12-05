@@ -37,7 +37,6 @@ const createTableProject = async () => {
             is_checked boolean NULL,
             user_id int NULL,
             uni_id int NOT NULL,
-            ability int[] null
             CONSTRAINT project_pk PRIMARY KEY (id)
         )`;
         await pool.query(query);
