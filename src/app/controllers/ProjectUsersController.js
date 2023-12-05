@@ -40,12 +40,12 @@ class AbilityController {
                 return res.status(400).json('Missing project_id or user_id');
             }
 
-            const resProject = await pool.query('select * from project where id = $1', [project_id])
+            const resProject = await pool.query('select * from project where id = $1', [project_id]);
             if (resProject.rows[0].length === 0) {
-                return res.status(400).json({message: 'Project is not found.'})
+                return res.status(404).json({ message: 'Project is not found.' });
             }
             if (resProject.rows[0].is_checked !== true) {
-                return res.status(400).json({message: 'This projects has not been approved.'})
+                return res.status(401).json({ message: 'This projects has not been approved.' });
             }
 
             const resProjectUser = await pool.query(
@@ -54,7 +54,7 @@ class AbilityController {
             );
 
             if (resProjectUser.rows.length > 0) {
-                return res.status(400).json({ message: 'Request is existed!' });
+                return res.status(409).json({ message: 'Request is existed!' });
             }
 
             const response = await pool.query(
@@ -105,9 +105,7 @@ class AbilityController {
             );
 
             if (checkProjectUser.rows.length === 0) {
-                return res
-                    .status(404)
-                    .json({message:`User with id = ${user_id} hasn't been apply this project.`});
+                return res.status(404).json({ message: `User with id = ${user_id} hasn't been apply this project.` });
             }
 
             const response = await pool.query(
@@ -148,14 +146,13 @@ class AbilityController {
                 DELETE FROM project_user
                 WHERE id = $1
             `;
-            
+
             const response = await pool.query(deleteProjectQuery, [id]);
             return res.status(200).json({
                 message: 'Delete project_user successfully!',
             });
-
         } catch (error) {
-            return res.status(500).json("Error")
+            return res.status(500).json('Error');
         }
     }
 }
