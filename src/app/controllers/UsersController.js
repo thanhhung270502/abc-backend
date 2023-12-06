@@ -7,7 +7,11 @@ class UsersController {
         try {
             const query = 'SELECT * FROM users';
             const response = await pool.query(query);
-            return res.status(200).json(response.rows);
+            const allUsers = response.rows.map(user => {
+                const {password, ...newUser} = user
+                return newUser
+            })
+            return res.status(200).json(allUsers);
         } catch (err) {
             console.log(err);
             return res.status(500).json('Internal Server Error');
@@ -18,12 +22,13 @@ class UsersController {
         try {
             const id = parseInt(req.params.slug);
             const response = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+            const {password, ...user} = response.rows[0]
             if (response.rows.length > 0) {
                 return res.status(200).json({
                     message: 'Found user successfully',
                     code: 200,
                     body: {
-                        user: response.rows[0],
+                        user: user,
                     },
                 });
             } else {
@@ -73,7 +78,6 @@ class UsersController {
                 );
 
                 getUser = await pool.query('SELECT * FROM users WHERE email = $1 AND password = $2', [email, password]);
-                console.log(getUser.rows[0]);
                 return res.status(200).json({
                     id: getUser.rows[0].id,
                     role: getUser.rows[0].role,
