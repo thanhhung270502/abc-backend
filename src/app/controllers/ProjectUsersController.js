@@ -125,7 +125,7 @@ class ProjectUsersController {
                 return res.status(404).json({ message: `User with id = ${user_id} hasn't been apply this project.` });
             }
 
-            // update application status 
+            // update application status
             const response = await pool.query(
                 'UPDATE project_user SET is_checked = $1 WHERE project_id = $2 and user_id = $3',
                 [is_checked, project_id, user_id],
