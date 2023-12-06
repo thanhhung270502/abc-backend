@@ -115,6 +115,27 @@ class UsersController {
             });
         }
     }
+
+    // POST /
+    async update(req, res) {
+        try {
+            const { id, email, name, avatar, uni_id } = req.body;
+            const response = await pool.query(
+                'UPDATE users SET email = $1, name = $2, avatar = $3, uni_id = $4 WHERE id = $5',
+                [email, name, avatar, uni_id, id],
+            );
+            const getUser = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+            return res.status(200).json({
+                message: 'User updated successfully',
+                body: {
+                    user: getUser.rows[0],
+                },
+            });
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json('Internal Server Error');
+        }
+    }
 }
 
 module.exports = new UsersController();
