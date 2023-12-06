@@ -7,7 +7,7 @@ const passportStrategy = require('./passport');
 require('dotenv').config();
 
 const app = express();
-const PORT = 80;
+const PORT = 4000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
