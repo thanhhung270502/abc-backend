@@ -116,7 +116,7 @@ describe('ProjectController TestCases', () => {
             project_id: projectId,
         });
         expect(response.status).toBe(200);
-        requestId = response.body.body.id
+        requestId = response.body.body.id;
     });
 
     test('community leader approve student apply a project', async () => {
@@ -139,10 +139,12 @@ describe('ProjectController TestCases', () => {
     });
 
     test('student delete a request to a project', async () => {
-        const response = await request(app).delete(`/project-user/${requestId}`).set('access-token', studentToken).send();
+        const response = await request(app)
+            .delete(`/project-user/${requestId}`)
+            .set('access-token', studentToken)
+            .send();
         expect(response.status).toBe(200);
-    })
-
+    });
 
     test('community leader delete project', async () => {
         const response = await request(app).delete(`/projects/${projectId}`).set('access-token', leaderToken).send();
@@ -155,5 +157,9 @@ describe('ProjectController TestCases', () => {
             .set('access-token', leaderToken)
             .send();
         expect(response.status).toBe(404);
+    });
+
+    test('get-all-projects-approved', async () => {
+        const response = await request(app).get('/projects/approved').send().expect(200);
     });
 });
