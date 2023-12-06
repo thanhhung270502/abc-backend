@@ -7,7 +7,7 @@ describe('Uni TestCases', () => {
 
     test('get-all-universities', async () => {
         const response = await request(app).get('/unis').send().expect(200);
-    }, 6000);
+    });
 
     test('add-new-valid-university', async () => {
         const response = await request(app).post('/unis/').send({ name: 'HCMUT 2' });
@@ -22,7 +22,7 @@ describe('Uni TestCases', () => {
 
     test('get-university-by-id', async () => {
         const response = await request(app).get(`/unis/${uni_id}`).send().expect(200);
-    }, 6000);
+    });
 
     test('update-exist-university', async () => {
         const response = await request(app)

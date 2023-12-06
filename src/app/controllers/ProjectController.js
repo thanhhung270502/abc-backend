@@ -266,17 +266,6 @@ class ProjectController {
             return res.status(500).json({ message: 'Error' });
         }
     }
-
-    async getProjectApproved(req, res) {
-        try {
-            const query = 'SELECT * FROM project WHERE is_checked = true';
-            const data = await pool.query(query);
-            return res.status(200).json(data.rows);
-        } catch (error) {
-            console.log(error);
-            return res.status(500).json('Internal Server Error');
-        }
-    }
 }
 
 module.exports = new ProjectController();

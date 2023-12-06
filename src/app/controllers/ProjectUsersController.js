@@ -1,6 +1,6 @@
 const pool = require('../../config/db');
 
-class ProjectUsersController {
+class AbilityController {
     // [GET]
     async index(req, res) {
         try {
@@ -21,22 +21,6 @@ class ProjectUsersController {
                 from users u 
                 join project_user pu on pu.user_id = u.id
                 where pu.project_id = $1`,
-                [id],
-            );
-            return res.status(200).json(response.rows);
-        } catch (err) {
-            console.log(err);
-            return res.status(500).json('Internal Server Error');
-        }
-    }
-    async getByUserID(req, res, next) {
-        try {
-            const id = parseInt(req.params.project_id);
-            const response = await pool.query(
-                `select *
-                from project p 
-                join project_user pu on pu.project_id = p.id
-                where pu.user_id = $1`,
                 [id],
             );
             return res.status(200).json(response.rows);
@@ -73,7 +57,6 @@ class ProjectUsersController {
                 return res.status(409).json({ message: 'Request is existed!' });
             }
 
-            // insert new application
             const response = await pool.query(
                 'INSERT INTO project_user (project_id, user_id, is_checked) VALUES ($1, $2, $3)',
                 [project_id, user_id, null],
@@ -125,7 +108,6 @@ class ProjectUsersController {
                 return res.status(404).json({ message: `User with id = ${user_id} hasn't been apply this project.` });
             }
 
-            // update application status
             const response = await pool.query(
                 'UPDATE project_user SET is_checked = $1 WHERE project_id = $2 and user_id = $3',
                 [is_checked, project_id, user_id],
@@ -175,4 +157,4 @@ class ProjectUsersController {
     }
 }
 
-module.exports = new ProjectUsersController();
+module.exports = new AbilityController();

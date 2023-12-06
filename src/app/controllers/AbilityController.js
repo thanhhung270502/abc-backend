@@ -111,10 +111,7 @@ class AbilityController {
             return res.status(200).json({
                 message: 'Delete Project successfully!',
             });
-        } catch (error) {
-            console.log(err);
-            return res.status(500).json('Internal Server Error');
-        }
+        } catch (error) {}
     }
 }
 
