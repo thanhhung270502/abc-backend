@@ -11,12 +11,7 @@ const PORT = 80;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(
-    cors({
-        origin: 'http://localhost:' + PORT,
-        credentials: true,
-    }),
-);
+app.use(cors());
 
 app.use(
     session({
