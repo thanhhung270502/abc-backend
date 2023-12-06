@@ -1,18 +1,17 @@
+const { verifyToken, isCommunityLeader, isUniveristyAdmin } = require('../app/middlewares/authMiddleware');
+
 const express = require('express');
 const router = express.Router();
-
 const projectController = require('../app/controllers/ProjectController');
 
-// http:localhost:3000/project/:slug
+router.put('/isChecked/:slug', isUniveristyAdmin, projectController.updateIsChecked);
+router.get('/approved', projectController.getProjectApproved);
+router.get('/me', verifyToken, projectController.getMyProject);
+router.get('/project-uni', projectController.getProjectUnis);
 router.get('/:slug', projectController.get);
-// http:localhost:3000/project/:slug/isChecked
-router.put('/:slug/isChecked', projectController.updateIsChecked);
-// http:localhost:3000/project/:slug
-router.put('/:slug', projectController.update);
-// http:localhost:3000/project/:slug
-router.delete('/:slug', projectController.delete);
-// http:localhost:3000/project
+router.delete('/:slug', isCommunityLeader, projectController.delete);
+router.put('/', isCommunityLeader, projectController.update);
 router.get('/', projectController.getAll);
-// http:localhost:3000/project
-router.post('/', projectController.create);
+router.post('/', isCommunityLeader, projectController.create);
+
 module.exports = router;

@@ -6,27 +6,27 @@ describe('Uni TestCases', () => {
     let uni_id;
 
     test('get-all-universities', async () => {
-        const response = await request(app).get('/uni').send().expect(200);
-    });
+        const response = await request(app).get('/unis').send().expect(200);
+    }, 6000);
 
     test('add-new-valid-university', async () => {
-        const response = await request(app).post('/uni/').send({ name: 'HCMUT 2' });
+        const response = await request(app).post('/unis/').send({ name: 'HCMUT 2' });
         expect(response.status).toBe(200);
 
         uni_id = response.body.body.id;
     }, 6000);
 
     test('add-new-invalid-university', async () => {
-        const response = await request(app).post('/uni/').send({}).expect(400);
+        const response = await request(app).post('/unis/').send({}).expect(400);
     }, 6000);
 
     test('get-university-by-id', async () => {
-        const response = await request(app).get(`/uni/${uni_id}`).send().expect(200);
-    });
+        const response = await request(app).get(`/unis/${uni_id}`).send().expect(200);
+    }, 6000);
 
     test('update-exist-university', async () => {
         const response = await request(app)
-            .put(`/uni/${uni_id}`)
+            .put(`/unis/${uni_id}`)
             .send({
                 name: 'New university name',
             })
@@ -35,7 +35,7 @@ describe('Uni TestCases', () => {
 
     test('update-non-exist-university', async () => {
         const response = await request(app)
-            .put(`/uni/${uni_id + 1000}`)
+            .put(`/unis/${uni_id + 1000}`)
             .send({
                 name: 'New university name',
             })
@@ -43,12 +43,12 @@ describe('Uni TestCases', () => {
     }, 6000);
 
     test('delete-exist-university', async () => {
-        const response = await request(app).delete(`/uni/${uni_id}`).expect(200);
+        const response = await request(app).delete(`/unis/${uni_id}`).expect(200);
     }, 6000);
 
     test('delete-non-exist-university', async () => {
         const response = await request(app)
-            .delete(`/uni/${uni_id + 1000}`)
+            .delete(`/unis/${uni_id + 1000}`)
             .expect(400);
     }, 6000);
 });
