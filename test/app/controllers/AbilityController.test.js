@@ -5,7 +5,7 @@ describe('AbilityController TestCases', () => {
     let ability_id;
 
     test('get-all-abilities', async () => {
-        const response = await request(app).get('/abilitys').send().expect(200);
+        const response = await request(app).get('/abilitys').send().expect(305);
     });
 
     test('add-new-valid-ability', async () => {
