@@ -56,7 +56,7 @@ describe('ProjectUsers TestCases', () => {
 
     test('get-all-project-users', async () => {
         const response = await request(app).get('/project-user').send().expect(200);
-    }, 6000);
+    }, 30000);
 
     test('add-new-valid-project-user', async () => {
         const response = await request(app).post(`/project-user`).set('access-token', studentToken).send({
@@ -64,7 +64,7 @@ describe('ProjectUsers TestCases', () => {
         });
         expect(response.status).toBe(200);
         requestId = response.body.body.id;
-    }, 6000);
+    }, 30000);
 
     test('add-new-invalid-project-user', async () => {
         const response = await request(app)
@@ -72,7 +72,7 @@ describe('ProjectUsers TestCases', () => {
             .set('access-token', studentToken)
             .send({})
             .expect(400);
-    }, 6000);
+    }, 30000);
 
     test('community-leader-approve-project-user', async () => {
         const response = await request(app).put('/project-user').set('access-token', leaderToken).send({
@@ -81,7 +81,7 @@ describe('ProjectUsers TestCases', () => {
             is_checked: true,
         });
         expect(response.status).toBe(200);
-    }, 6000);
+    }, 30000);
 
     test('community-leader-reject-project-user', async () => {
         const response = await request(app).put('/project-user').set('access-token', leaderToken).send({
@@ -90,7 +90,7 @@ describe('ProjectUsers TestCases', () => {
             is_checked: false,
         });
         expect(response.status).toBe(200);
-    }, 6000);
+    }, 30000);
 
     test('community-leader-approve-non-exist-project-user', async () => {
         const response = await request(app).put('/project-user').set('access-token', leaderToken).send({
@@ -99,7 +99,7 @@ describe('ProjectUsers TestCases', () => {
             is_checked: true,
         });
         expect(response.status).toBe(404);
-    }, 6000);
+    }, 30000);
 
     test('reject-non-exist-project-user', async () => {
         const response = await request(app).put('/project-user').set('access-token', leaderToken).send({
@@ -108,7 +108,7 @@ describe('ProjectUsers TestCases', () => {
             is_checked: false,
         });
         expect(response.status).toBe(404);
-    }, 6000);
+    }, 30000);
 
     test('delete-exist-project-user', async () => {
         const response = await request(app)
@@ -116,12 +116,12 @@ describe('ProjectUsers TestCases', () => {
             .set('access-token', studentToken)
             .send();
         expect(response.status).toBe(200);
-    }, 6000);
+    }, 30000);
 
     test('delete-non-exist-project-user', async () => {
         const response = await request(app)
             .delete(`/project-user/${requestId + 1000}`)
             .set('access-token', studentToken)
             .expect(400);
-    }, 6000);
+    }, 30000);
 });

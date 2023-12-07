@@ -2,8 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const route = require('./routes');
 const session = require('express-session');
-const passport = require('passport');
-const passportStrategy = require('./passport');
 require('dotenv').config();
 
 const app = express();
@@ -20,9 +18,6 @@ app.use(
         secret: 'SECRET',
     }),
 );
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Routes
 route(app);

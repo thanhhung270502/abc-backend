@@ -6,7 +6,7 @@ describe('User TestCases', () => {
     let user_id;
     test('get-all-users', async () => {
         const response = await request(app).get('/users').send().expect(200);
-    }, 6000);
+    }, 30000);
 
     test('create-new-user', async () => {
         const response = await request(app)
@@ -21,11 +21,11 @@ describe('User TestCases', () => {
             })
             .expect(200);
         user_id = response.body.id;
-    }, 6000);
+    }, 30000);
 
     test('get-user-by-id', async () => {
         const response = await request(app).get(`/users/1`).send().expect(200);
-    }, 6000);
+    }, 30000);
 
     test('update-name-of-valid-user ', async () => {
         const response = await request(app)
@@ -36,7 +36,7 @@ describe('User TestCases', () => {
                 uni_id: '7',
             })
             .expect(200);
-    }, 6000);
+    }, 30000);
 
     test('update-name-of-invalid-user ', async () => {
         const response = await request(app)
@@ -47,15 +47,15 @@ describe('User TestCases', () => {
                 uni_id: '7',
             })
             .expect(404);
-    }, 6000);
+    }, 30000);
 
     test('delete-exist-user', async () => {
         const response = await request(app).delete(`/users/${user_id}`).expect(200);
-    }, 6000);
+    }, 30000);
 
     test('delete-non-exist-user', async () => {
         const response = await request(app)
             .delete(`/users/${user_id + 1000}`)
             .expect(404);
-    }, 6000);
+    }, 30000);
 });

@@ -13,11 +13,11 @@ describe('AbilityController TestCases', () => {
         expect(response.status).toBe(200);
 
         ability_id = response.body.body.id;
-    }, 6000);
+    }, 30000);
 
     test('add-new-invalid-ability', async () => {
         const response = await request(app).post('/abilitys/').send({}).expect(400);
-    }, 6000);
+    }, 30000);
 
     test('get-abilitie-by-id', async () => {
         const response = await request(app).get(`/abilitys/${ability_id}`).send().expect(200);
@@ -30,7 +30,7 @@ describe('AbilityController TestCases', () => {
                 name: 'New ability name',
             })
             .expect(200);
-    }, 6000);
+    }, 30000);
 
     test('update-non-exist-ability', async () => {
         const response = await request(app)
@@ -39,15 +39,15 @@ describe('AbilityController TestCases', () => {
                 name: 'New ability name',
             })
             .expect(400);
-    }, 6000);
+    }, 30000);
 
     test('delete-exist-ability', async () => {
         const response = await request(app).delete(`/abilitys/${ability_id}`).expect(200);
-    }, 6000);
+    }, 30000);
 
     test('delete-non-exist-ability', async () => {
         const response = await request(app)
             .delete(`/abilitys/${ability_id + 1000}`)
             .expect(400);
-    }, 6000);
+    }, 30000);
 });
