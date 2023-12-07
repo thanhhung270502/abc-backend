@@ -25,7 +25,7 @@ const mockData = {
         password: '123456',
     },
     studentAccount: {
-        email: 'student@vbchain.vn',
+        email: 'uniquestudent@gmail.com',
         password: '123456',
     },
 };
@@ -110,7 +110,7 @@ describe('ProjectUsers TestCases', () => {
         expect(response.status).toBe(404);
     }, 6000);
 
-    test('delete-exist-ability', async () => {
+    test('delete-exist-application', async () => {
         const response = await request(app)
             .delete(`/project-user/${requestId}`)
             .set('access-token', studentToken)
@@ -118,7 +118,7 @@ describe('ProjectUsers TestCases', () => {
         expect(response.status).toBe(200);
     }, 6000);
 
-    test('delete-non-exist-ability', async () => {
+    test('delete-non-exist-application', async () => {
         const response = await request(app)
             .delete(`/project-user/${requestId + 1000}`)
             .set('access-token', studentToken)
