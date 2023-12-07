@@ -1,5 +1,6 @@
 const pool = require('../../config/db');
 const { generateToken, verifyToken } = require('../middlewares/authMiddleware');
+const bcrypt = require('bcrypt');
 
 class UsersController {
     // [GET] /
@@ -7,6 +8,10 @@ class UsersController {
         try {
             const query = 'SELECT * FROM users';
             const response = await pool.query(query);
+            const allUsers = response.rows.map(user => {
+                const {password, ...newUser} = user
+                return newUser
+            })
             return res.status(200).json(response.rows);
         } catch (err) {
             console.log(err);
@@ -18,12 +23,13 @@ class UsersController {
         try {
             const id = parseInt(req.params.slug);
             const response = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+            const {password, ...user} = response.rows[0]
             if (response.rows.length > 0) {
                 return res.status(200).json({
                     message: 'Found user successfully',
                     code: 200,
                     body: {
-                        user: response.rows[0],
+                        user: user,
                     },
                 });
             } else {
@@ -56,6 +62,7 @@ class UsersController {
                 return res.status(400).json({ message: 'University is compulsory for student and admin' });
             }
 
+
             // Check if the user already exists
             const query = 'SELECT * FROM users WHERE email = $1';
             var getUser = await pool.query(query, [email]);
@@ -67,13 +74,15 @@ class UsersController {
                     body: '',
                 });
             } else {
+                const hashedPassword = await bcrypt.hash(password, 10)
                 const response = await pool.query(
                     'INSERT INTO users (email, password, name, role, avatar, uni_id) VALUES ($1, $2, $3, $4, $5, $6)',
-                    [email, password, name, role, avatar, uni_id],
+                    [email, hashedPassword, name, role, avatar, uni_id],
                 );
 
-                getUser = await pool.query('SELECT * FROM users WHERE email = $1 AND password = $2', [email, password]);
-                console.log(getUser.rows[0]);
+                getUser = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+                console.log(getUser)
+
                 return res.status(200).json({
                     id: getUser.rows[0].id,
                     role: getUser.rows[0].role,
@@ -96,13 +105,17 @@ class UsersController {
         if (!email || !password) {
             return res.stats(400).json({ message: 'Invalid email or password.' });
         }
-        const response = await pool.query('select * from users where email = $1 and password = $2', [email, password]);
+
+        const response = await pool.query('select * from users where email = $1', [email]);
+
 
         if (response.rows.length === 0) {
             return res.status(400).json({ message: "User doesn't exist." });
         }
 
-        if (password === response.rows[0].password) {
+        const passwordMatch = await bcrypt.compare(password, response.rows[0].password);
+
+        if (passwordMatch) {
             res.status(201).json({
                 id: response.rows[0].id,
                 role: response.rows[0].role,
@@ -112,7 +125,12 @@ class UsersController {
                 uni_id: response.rows[0].uni_id,
                 accessToken: generateToken(response.rows[0].id, response.rows[0].role),
             });
+        } else {
+            res.status(400).json({
+                messsage: "Invalid credentials"
+            })
         }
+
     }
 
     // PUT /
