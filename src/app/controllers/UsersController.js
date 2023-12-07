@@ -81,7 +81,6 @@ class UsersController {
                 );
 
                 getUser = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-                console.log(getUser)
 
                 return res.status(200).json({
                     id: getUser.rows[0].id,
